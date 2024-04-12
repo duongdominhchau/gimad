@@ -4,6 +4,7 @@ from rich import print
 from typer import Option
 
 from gimad._config import load_config
+from gimad._db import DatabaseClient
 from gimad._migration import collect_migrations
 
 
@@ -23,4 +24,5 @@ This option is useful for initializing a new database.
     scripts = collect_migrations(skip_oneoff)
     print(scripts)
     config = load_config()
-    print(config)
+    with DatabaseClient(config.db_url) as client:
+        client.setup_history_table()

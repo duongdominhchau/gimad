@@ -30,11 +30,11 @@ class Config(BaseSettings):
         file_secret_settings: PydanticBaseSettingsSource,
     ) -> tuple[PydanticBaseSettingsSource, ...]:
         return (
-            init_settings,
-            YamlConfigSettingsSource(settings_cls),
-            TomlConfigSettingsSource(settings_cls),
-            JsonConfigSettingsSource(settings_cls),
             env_settings,
+            JsonConfigSettingsSource(settings_cls),
+            TomlConfigSettingsSource(settings_cls),
+            YamlConfigSettingsSource(settings_cls),
+            init_settings,
         )
 
 
