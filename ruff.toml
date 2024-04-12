@@ -1,0 +1,14 @@
+target-version = "py312"
+
+[lint]
+select = ["ALL"]
+ignore = ["D", "FBT002", "E501"]
+
+[lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[lint.isort]
+split-on-trailing-comma = false
+
+[lint.pycodestyle]
+max-doc-length = 88

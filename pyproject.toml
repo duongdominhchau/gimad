@@ -17,7 +17,3 @@ build-backend = "pdm.backend"
 [tool.rye]
 managed = true
 dev-dependencies = ["ruff", "pyright", "ward"]
-
-[tool.ruff]
-select = ["ALL"]
-ignore = ["D", "FBT002", "E501"]
