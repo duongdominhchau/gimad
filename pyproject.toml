@@ -20,4 +20,4 @@ dev-dependencies = ["ruff", "pyright", "ward"]
 
 [tool.ruff]
 select = ["ALL"]
-ignore = ["D", "T201"]
+ignore = ["D", "FBT002", "E501"]

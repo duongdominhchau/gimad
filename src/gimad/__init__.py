@@ -1,14 +1,20 @@
+import os
 import re
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated
 
 from rich import print
 from typer import Argument, Option, Typer
 
+PERMANENT_DIR = "permanent"
+ONEOFF_DIR = "oneoff"
+
+
 app = Typer(
     no_args_is_help=True,
-    short_help="Non-schema migration runner for PostgreSQL",
+    help="Non-schema migration runner for PostgreSQL",
 )
 
 
@@ -21,13 +27,9 @@ def init(
 ) -> None:
     """Initialize current directory with data migration directory structure"""
     migration_root = Path(migration_dir)
-    try:
-        migration_root.mkdir()
-        for d in ("permanent", "oneoff"):
-            migration_root.joinpath(d).mkdir()
-    except FileExistsError:
-        msg = f"[red]ERROR: Migration script dir '{migration_dir}' already exist[/red]"
-        print(msg, file=sys.stderr)
+    migration_root.mkdir()
+    for d in (PERMANENT_DIR, ONEOFF_DIR):
+        migration_root.joinpath(d).mkdir()
 
 
 @app.command()
@@ -50,9 +52,16 @@ ones. This is essentially database seeding script.
     ] = False,
 ) -> None:
     """Create new data migration"""
-    script_dir = Path()
+
+    migration_dir = os.environ.get("GIMAD_MIGRATION_DIR", "data_migrations")
+    script_dir = Path(migration_dir).joinpath(
+        PERMANENT_DIR if permanent else ONEOFF_DIR,
+    )
     migration_name = _migration_name(name)
-    print(migration_name)
+    timestamp = datetime.now(tz=UTC).strftime("%Y%m%d_%H%M%S")
+    script_name = f"{timestamp}_{migration_name}.py"
+    # TODO: Render template
+    script_dir.joinpath(script_name).write_text("")
 
 
 def _migration_name(name: str) -> str:
@@ -92,4 +101,10 @@ def redo() -> None:
 
 
 def main() -> None:
-    app()
+    try:
+        app()
+    except Exception as e:  # noqa: BLE001
+        if not os.environ.get("DEBUG"):
+            print(f"[red]{e}[/red]", file=sys.stderr)
+        else:
+            raise
