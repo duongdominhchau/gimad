@@ -3,6 +3,8 @@ from typing import Annotated
 from rich import print
 from typer import Option
 
+from gimad._migration import collect_migrations
+
 
 def up(
     skip_oneoff: Annotated[
@@ -17,4 +19,5 @@ This option is useful for initializing a new database.
     ] = False,
 ) -> None:
     """Run pending migrations"""
-    print("Running pending migrations with skip_oneoff =", skip_oneoff)
+    scripts = collect_migrations(skip_oneoff)
+    print(scripts)

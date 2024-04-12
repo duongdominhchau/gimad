@@ -1,4 +1,3 @@
-import os
 import re
 from datetime import UTC, datetime
 from pathlib import Path
@@ -6,7 +5,7 @@ from typing import Annotated
 
 from typer import Option
 
-from gimad._constants import ONEOFF_DIR, PERMANENT_DIR
+from gimad._constants import MIGRATION_DIR, ONEOFF_DIR, PERMANENT_DIR
 
 
 def _migration_name(name: str) -> str:
@@ -35,8 +34,7 @@ ones. This is essentially database seeding script.
 ) -> None:
     """Create new data migration"""
 
-    migration_dir = os.environ.get("GIMAD_MIGRATION_DIR", "data_migrations")
-    script_dir = Path(migration_dir).joinpath(
+    script_dir = Path(MIGRATION_DIR).joinpath(
         PERMANENT_DIR if permanent else ONEOFF_DIR,
     )
     migration_name = _migration_name(name)
