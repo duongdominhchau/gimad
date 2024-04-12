@@ -1,4 +1,5 @@
 import contextlib
+from collections.abc import Sequence
 from typing import Self
 
 import psycopg
@@ -24,7 +25,22 @@ class DatabaseClient:
                 """
                 create table data_migrations(
                     name varchar primary key,
-                    type varchar not null
+                    type varchar not null,
+                    created_at timestamptz not null default now()
                 )
                 """,
             )
+
+    def exclude_executed_scripts(self, scripts: Sequence[str]) -> list:
+        res = self._cursor.execute(
+            """
+            with all_scripts as (
+                select unnest((%s)::varchar[]) name
+                )
+            select name
+            from all_scripts
+            where all_scripts.name not in (select name from data_migrations)
+            """,
+            (scripts,),
+        )
+        return [r[0] for r in res]

@@ -3,6 +3,7 @@ target-version = "py312"
 [lint]
 select = ["ALL"]
 ignore = [
+  "COM812",
   "D",
   "E501",
   "PGH003",
