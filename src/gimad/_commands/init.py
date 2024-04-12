@@ -6,7 +6,7 @@ from rich import print
 from typer import Argument, Option
 
 from gimad._config import Config
-from gimad._constants import CONFIG_NAME, ONEOFF_DIR, PERMANENT_DIR
+from gimad._utils import CONFIG_NAME, ONEOFF_DIR_NAME, PERMANENT_DIR_NAME
 
 
 def _create_config() -> None:
@@ -34,7 +34,7 @@ def init(
     if force:
         shutil.rmtree(migration_root)
     migration_root.mkdir()
-    for d in (PERMANENT_DIR, ONEOFF_DIR):
+    for d in (PERMANENT_DIR_NAME, ONEOFF_DIR_NAME):
         migration_root.joinpath(d).mkdir()
     _create_config()
     print("[green]Gimad successfully initialized[/green]")

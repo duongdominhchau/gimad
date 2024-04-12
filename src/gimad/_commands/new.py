@@ -5,7 +5,7 @@ from typing import Annotated
 
 from typer import Option
 
-from gimad._constants import MIGRATION_DIR, ONEOFF_DIR, PERMANENT_DIR
+from gimad._utils import MIGRATION_DIR, ONEOFF_DIR_NAME, PERMANENT_DIR_NAME
 
 
 def _migration_name(name: str) -> str:
@@ -35,10 +35,10 @@ ones. This is essentially database seeding script.
     """Create new data migration"""
 
     script_dir = Path(MIGRATION_DIR).joinpath(
-        PERMANENT_DIR if permanent else ONEOFF_DIR,
+        PERMANENT_DIR_NAME if permanent else ONEOFF_DIR_NAME,
     )
     migration_name = _migration_name(name)
     timestamp = datetime.now(tz=UTC).strftime("%Y%m%d_%H%M%S")
     script_name = f"{timestamp}_{migration_name}.py"
-    # TODO: Render template
-    script_dir.joinpath(script_name).write_text("")
+    template = Path(__file__).parents[1].joinpath("_template.py")
+    script_dir.joinpath(script_name).write_bytes(template.read_bytes())

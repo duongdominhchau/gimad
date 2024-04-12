@@ -41,6 +41,36 @@ class DatabaseClient:
             from all_scripts
             where all_scripts.name not in (select name from data_migrations)
             """,
-            (scripts,),
+            [scripts],
         )
         return [r[0] for r in res]
+
+    def query_last_executed_migrations(self, n: int) -> list[dict[str, str]]:
+        rows = self._cursor.execute(
+            """
+            select name, type
+            from data_migrations
+            order by name desc
+            limit %s
+            """,
+            [n],
+        )
+        return [{"name": r[0], "type": r[1]} for r in rows]
+
+    def mark_executed(self, name: str, type: str) -> None:
+        self._cursor.execute(
+            """
+            insert into data_migrations(name, type)
+            values(%s, %s)
+            """,
+            [name, type],
+        )
+
+    def unmark_executed(self, name: str, type: str) -> None:
+        self._cursor.execute(
+            """
+            delete from data_migrations
+            where name = %s and type = %s
+            """,
+            [name, type],
+        )

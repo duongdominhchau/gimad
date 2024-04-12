@@ -1,7 +1,5 @@
 import os
-import sys
 
-from rich import print
 from typer import Typer
 
 from gimad._commands.down import down
@@ -9,6 +7,7 @@ from gimad._commands.init import init
 from gimad._commands.new import new
 from gimad._commands.redo import redo
 from gimad._commands.up import up
+from gimad._utils import error
 
 app = Typer(
     no_args_is_help=True,
@@ -18,11 +17,11 @@ Non-schema migration runner for PostgreSQL
 For debugging, set the environment variable DEBUG=1 to see the stack trace
     """,
 )
-app.command()(init)
-app.command()(new)
-app.command()(up)
-app.command()(down)
-app.command()(redo)
+init = app.command()(init)
+new = app.command()(new)
+up = app.command()(up)
+down = app.command()(down)
+redo = app.command()(redo)
 
 
 def main() -> None:
@@ -30,6 +29,6 @@ def main() -> None:
         app()
     except Exception as e:  # noqa: BLE001
         if not os.environ.get("DEBUG"):
-            print(f"[red]{e}[/red]", file=sys.stderr)
+            error(str(e))
         else:
             raise

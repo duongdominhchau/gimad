@@ -3,8 +3,9 @@ target-version = "py312"
 [lint]
 select = ["ALL"]
 ignore = [
-  "COM812",
   "D",
+  "TD",
+  "COM812",
   "E501",
   "PGH003",
   # Parameter is part of public interface

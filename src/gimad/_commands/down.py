@@ -1,14 +1,19 @@
 from typing import Annotated
 
-from rich import print
-from typer import Argument
+from typer import Option
+
+from gimad._config import load_config
+from gimad._db import DatabaseClient
+from gimad._runner import Runner
 
 
 def down(
-    n: Annotated[
+    count: Annotated[
         int,
-        Argument(help="Number of migrations to rollback"),
+        Option("-c", "--count", help="Number of migrations to rollback", min=1),
     ] = 1,
 ) -> None:
     """Run rollback scripts"""
-    print("Rolling back", n, "migrations")
+    config = load_config()
+    with DatabaseClient(config.db_url) as client:
+        Runner(client).down(count)

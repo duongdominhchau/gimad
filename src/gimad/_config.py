@@ -7,7 +7,7 @@ from pydantic_settings import (
     YamlConfigSettingsSource,
 )
 
-from gimad._constants import CONFIG_NAME
+from gimad._utils import CONFIG_NAME
 
 
 class Config(BaseSettings):
