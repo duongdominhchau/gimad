@@ -3,7 +3,7 @@ name = "gimad"
 version = "0.0.1"
 description = "Non-schema database migration tool for PostgreSQL"
 authors = [{ name = "Chau Duong", email = "duongdominhchau@gmail.com" }]
-dependencies = ["psycopg", "typer[all]"]
+dependencies = ["psycopg[binary]", "typer[all]"]
 readme = "README.md"
 requires-python = ">= 3.12"
 
@@ -16,4 +16,8 @@ build-backend = "pdm.backend"
 
 [tool.rye]
 managed = true
-dev-dependencies = []
+dev-dependencies = ["ruff", "pyright", "ward"]
+
+[tool.ruff]
+select = ["ALL"]
+ignore = ["D", "T201"]
