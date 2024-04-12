@@ -3,7 +3,7 @@ name = "gimad"
 version = "0.0.1"
 description = "Non-schema database migration tool for PostgreSQL"
 authors = [{ name = "Chau Duong", email = "duongdominhchau@gmail.com" }]
-dependencies = ["psycopg[binary]", "typer[all]", "pydantic-settings"]
+dependencies = ["psycopg[binary]", "typer", "pydantic-settings"]
 readme = "README.md"
 requires-python = ">= 3.12"
 
