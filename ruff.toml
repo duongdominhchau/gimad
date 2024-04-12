@@ -5,6 +5,9 @@ select = ["ALL"]
 ignore = [
   "D",
   "E501",
+  "PGH003",
+  # Parameter is part of public interface
+  "ARG003",
   # Trivial parameters, no need to annotate
   "ANN101",
   "ANN102",

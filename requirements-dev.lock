@@ -8,6 +8,8 @@
 #   with-sources: false
 
 -e file:.
+annotated-types==0.6.0
+    # via pydantic
 click==8.1.7
     # via click-completion
     # via click-default-group
@@ -37,9 +39,17 @@ psycopg==3.1.18
     # via gimad
 psycopg-binary==3.1.18
     # via psycopg
+pydantic==2.7.0
+    # via pydantic-settings
+pydantic-core==2.18.1
+    # via pydantic
+pydantic-settings==2.2.1
+    # via gimad
 pygments==2.17.2
     # via rich
 pyright==1.1.358
+python-dotenv==1.0.1
+    # via pydantic-settings
 rich==13.7.1
     # via typer
     # via ward
@@ -57,5 +67,7 @@ typer==0.12.3
     # via gimad
 typing-extensions==4.11.0
     # via psycopg
+    # via pydantic
+    # via pydantic-core
     # via typer
 ward==0.68.0b0
