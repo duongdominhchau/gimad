@@ -104,7 +104,7 @@ class Runner:
     def _collect_pending_migrations(self, skip_oneoff: bool) -> list[Migration]:
         scripts = _collect_migrations(skip_oneoff)
         pending = set(self._client.exclude_executed_scripts([s.name for s in scripts]))
-        return [s for s in scripts if s.name in pending]
+        return sorted((s for s in scripts if s.name in pending), key=lambda s: s.name)
 
     def _collect_executed_migrations(self, n: int) -> list[Migration]:
         rows = self._client.query_last_executed_migrations(n)
