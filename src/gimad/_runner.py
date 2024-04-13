@@ -75,7 +75,7 @@ class Runner:
         """
         self._migrations = self._collect_pending_migrations(skip_oneoff)
         if not self._migrations:
-            print("Nothing to run")
+            print("[blue]Nothing to run[/blue]")
             return
 
         if n:
@@ -111,9 +111,11 @@ class Runner:
         return [Migration.model_validate(r) for r in rows]
 
     def _migrate(self, migration: Migration) -> None:
+        print(f"[blue]:: Migrating {migration.type}/{migration.name}[/blue]")
         migration.module.up()
         self._client.mark_executed(migration.name, migration.type)
 
     def _rollback(self, migration: Migration) -> None:
+        print(f"[blue]:: Rolling back {migration.type}/{migration.name}[/blue]")
         migration.module.down()
         self._client.unmark_executed(migration.name, migration.type)
